@@ -12,14 +12,12 @@ export default function Quiz(){
     const activeQuestionIndex = UserAnswers.length ;
     const quizIsComplete= activeQuestionIndex === QUESTIONS.length
     
-    const handelSelectAnswer = useCallback( () => {
+    const handelSelectAnswer = useCallback( 
         function handelSelectAnswer(selectedAnswer){
             setUserAnswers( prev => {
                 return [...prev , selectedAnswer]
             })
-        }
-    
-    } ,[]) 
+        },[]) 
 
     const handelSkipAnswer = useCallback(
         () => handelSelectAnswer(null),
@@ -45,7 +43,8 @@ export default function Quiz(){
 
 
             <div id="question">
-                <QuetionTimer 
+                <QuetionTimer
+                 key={activeQuestionIndex} 
                  timeout={10000} 
                  onTimeOut={handelSkipAnswer}/>
                 <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
