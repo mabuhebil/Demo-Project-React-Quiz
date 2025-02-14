@@ -4,11 +4,14 @@ import QUESTIONS from '../questions'
 
 import quizCompleteImg from '../assets/quiz-complete.png'
 import QuetionTimer from "./QuestionTimer";
+import Answers from "./Answers";
 
 export default function Quiz(){
 
  const [answerState , setAnswerState] = useState('')    
  const [UserAnswers , setUserAnswers]=useState([])
+
+
 
     const activeQuestionIndex = answerState ==='' ? UserAnswers.length : UserAnswers.length -1;
     const quizIsComplete= activeQuestionIndex === QUESTIONS.length
@@ -45,10 +48,7 @@ export default function Quiz(){
         )
     }
 
-
-    const shuffledAnswers =[...QUESTIONS[activeQuestionIndex].answers];
-    shuffledAnswers.sort(()=>Math.random() -0.5)
-
+   
 
 
  return(
@@ -61,25 +61,14 @@ export default function Quiz(){
                  timeout={10000} 
                  onTimeOut={handelSkipAnswer}/>
                 <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-            <ul id="answers">
-                {QUESTIONS[activeQuestionIndex].answers.map((answer) =>{
-
-                    const isSelected=UserAnswers[UserAnswers.length -1] ===answer
-                    let cssClasses=''
-
-                    if(answerState ==='answered' && isSelected){
-                        cssClasses='selected'
-                    }
-                    
-                    if((answerState ==='correct' || answerState ==='wrong') && isSelected){
-                        cssClasses=answerState
-                    }
-                return (
-                    <li key={answer} className="answer">
-                        <button className={cssClasses} onClick={() => handelSelectAnswer(answer)}>{answer}</button>
-                    </li>)
-                })}
-            </ul>
+            
+            <Answers 
+            key={activeQuestionIndex}
+            answers={QUESTIONS[activeQuestionIndex].answers}
+            selectedAnswers={UserAnswers[UserAnswers.length -1] }
+            answerState={answerState}
+            onSelect={handelSelectAnswer}
+            />
             </div>
         </div>
   )
